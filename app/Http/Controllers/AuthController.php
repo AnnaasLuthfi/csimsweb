@@ -18,27 +18,24 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'email'     => 'required',
             'password'  => 'required'
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $credentials = $request->only('email', 'password');
 
-        if (!$token = auth()->guard('web')->attempt($credentials)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Email atau Password Anda salah'
-            ], 401);
+        if (!Auth::attempt($credentials)) {
+            return redirect()->back()->with('error', 'Email atau Password Anda salah');
         }
 
         return redirect()->route('produk.index');
     }
+
 
     public function logout(Request $request)
     {

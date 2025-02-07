@@ -26,7 +26,13 @@
                 @if (session('message'))
                 <p class="success-message">{{ session('message') }}</p>
                 @endif
-
+                @if (session('error'))
+                <script>
+                    window.onload = function() {
+                        alert("{{ session('error') }}");
+                    };
+                </script>
+                @endif
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf

@@ -59,7 +59,6 @@ class ProdukController extends Controller
         $category_id = $request->input('category_id');
         $search = $request->input('search');
 
-        // Query to filter products based on search and category
         $produks = Produk::query();
 
         if ($category_id) {
@@ -87,25 +86,31 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'produk' => 'required|min:5',
-            'hrg_beli' => 'required',
-            'hrg_jual' => 'required',
-            'stok' => 'required',
-            'category_id' => 'required|exists:categories,id'
+            'hrg_beli' => 'required|numeric|min:0',
+            'stok' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ]);
+
+        $hargaJual = round($request->hrg_beli * 1.3);
 
         $image = $request->file('image');
         $image->storeAs('public/posts', $image->hashName());
 
+        if (Produk::where('produk', $request->produk)->exists()) {
+            return redirect()->back()->with('error', 'Nama produk sudah digunakan!');
+        }
+
         Produk::create([
-            'image' => $image->hashName(),
             'produk' => $request->produk,
             'hrg_beli' => $request->hrg_beli,
-            'hrg_jual' => $request->hrg_jual,
+            'hrg_jual' => $hargaJual,
             'stok' => $request->stok,
-            'category_id' => $request->category_id
+            'category_id' => $request->category_id,
+            'image' => $image->hashName(),
         ]);
+
 
         return redirect()->route('produk.index')->with(['success' => 'Data Berhasil Disimpan!']);
     }
@@ -120,13 +125,18 @@ class ProdukController extends Controller
     public function update(Request $request, Produk $produk)
     {
         $this->validate($request, [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'produk' => 'required|min:5',
-            'hrg_beli' => 'required',
-            'hrg_jual' => 'required',
-            'stok' => 'required',
-            'category_id' => 'required|exists:categories,id'
+            'hrg_beli' => 'required|numeric|min:0',
+            'stok' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
+
+        $hargaJual = round($request->hrg_beli * 1.3);
+
+        if (Produk::where('produk', $request->produk)->where('id', '!=', $produk->id)->exists()) {
+            return redirect()->back()->with('error', 'Nama produk sudah digunakan!');
+        }
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -135,27 +145,25 @@ class ProdukController extends Controller
             Storage::delete('public/posts/' . $produk->image);
 
             $produk->update([
-                'image' => $image->hashName(),
                 'produk' => $request->produk,
                 'hrg_beli' => $request->hrg_beli,
-                'hrg_jual' => $request->hrg_jual,
+                'hrg_jual' => $hargaJual,
                 'stok' => $request->stok,
-                'category_id' => $request->category_id
+                'category_id' => $request->category_id,
+                'image' => $image->hashName(),
             ]);
         } else {
             $produk->update([
-                'image' => $image->hashName(),
                 'produk' => $request->produk,
                 'hrg_beli' => $request->hrg_beli,
-                'hrg_jual' => $request->hrg_jual,
+                'hrg_jual' => $hargaJual,
                 'stok' => $request->stok,
-                'category_id' => $request->category_id
+                'category_id' => $request->category_id,
             ]);
         }
 
         return redirect()->route('produk.index')->with(['success' => 'Data Berhasil Diubah!']);
     }
-
 
     public function destroy(Produk $produk)
     {
