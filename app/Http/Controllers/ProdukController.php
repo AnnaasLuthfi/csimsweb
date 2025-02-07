@@ -29,7 +29,7 @@ class ProdukController extends Controller
         foreach ($products as $product) {
             $sheet->setCellValue('A' . $row, $product->id);
             $sheet->setCellValue('B' . $row, $product->produk);
-            $sheet->setCellValue('C' . $row, $product->category ? $product->category->nama_kategori : 'Tanpa Kategori');
+            $sheet->setCellValue('C' . $row, $product->category ? $product->category->name : 'Tanpa Kategori');
             $sheet->setCellValue('D' . $row, $product->hrg_beli);
             $sheet->setCellValue('E' . $row, $product->hrg_jual);
             $sheet->setCellValue('F' . $row, $product->stok);

@@ -43,7 +43,7 @@
 
                         <div class="col-md-4">
                             <label for="validationCustom01" class="form-label">Kategori</label>
-                            <select name="category_id" class="form-control">
+                            <select name="category_id" class="form-control @error('category_id') is-invalid @enderror">
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -52,29 +52,29 @@
                         </div>
                         <div class="col-md-8">
                             <label for="validationCustom02" class="form-label">Nama Barang</label>
-                            <input type="text" class="form-control" name="produk" value="{{ old('produk') }}" placeholder="Masukkan Nama Barang">
+                            <input type="text" class="form-control @error('produk') is-invalid @enderror" name="produk" value="{{ old('produk') }}" placeholder="Masukkan Nama Barang">
 
                         </div>
 
                         <div class="col-md-4">
                             <label for="validationCustom01" class="form-label">Harga Beli</label>
-                            <input type="number" step="0.01" class="form-control" name="hrg_beli" value="{{ old('hrg_beli') }}" placeholder="Masukkan Harga Beli" required>
+                            <input type="number" step="0.01" class="form-control @error('hrg_beli') is-invalid @enderror" name="hrg_beli" value="{{ old('hrg_beli') }}" placeholder="Masukkan Harga Beli" required>
 
                         </div>
 
                         <div class="col-md-4">
                             <label for="validationCustom02" class="form-label">Harga Jual</label>
 
-                            <input type="number" step="0.01" class="form-control" name="hrg_jual" value="{{ old('hrg_jual') }}" placeholder="Masukkan Harga Jual" readonly required>
+                            <input type="number" step="0.01" class="form-control @error('hrg_jual') is-invalid @enderror" name="hrg_jual" value="{{ old('hrg_jual') }}" placeholder="Masukkan Harga Jual" readonly required>
 
                         </div>
                         <div class="col-md-4">
                             <label for="validationCustom02" class="form-label">Stock Barang</label>
-                            <input type="text" class="form-control" name="stok" value="{{ old('stok') }}" placeholder="Masukkan jumlah stock barang">
+                            <input type="text" class="form-control @error('stok') is-invalid @enderror" name="stok" value="{{ old('stok') }}" placeholder="Masukkan jumlah stock barang">
                         </div>
 
                         <div class="form-group">
-                            <input type="file" class="form-control" name="image">
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image">
                         </div>
 
                         <div class="col-auto ms-auto">
