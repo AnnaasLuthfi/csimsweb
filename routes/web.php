@@ -21,7 +21,7 @@ use App\Exports\ProdukExport;
 */
 
 Route::get('/', function () {
-    return redirect('/posts');
+    return redirect('/login');
 });
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
