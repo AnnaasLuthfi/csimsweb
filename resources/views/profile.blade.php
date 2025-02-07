@@ -30,7 +30,7 @@
     <div class="container-fluid">
         <div class="tab-content">
             <div class="tab-pane fade show active" id="profile">
-                <img src="{{asset('image/Frame98700.png')}}" class="rounded-circle img-fluid" style="width: 200px;" />
+                <img src="{{asset('image/PasFoto.jpg')}}" class="rounded-circle img-fluid" style="width: 150px; height: 150px;" />
                 <h4>Annaas Luthfi Alfadhli</h4><br>
                 <form class="row g-3 needs-validation" novalidate>
                     <div class="col-md-8">
